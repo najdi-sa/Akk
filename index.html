@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة ثقة - بنك الإنماء</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'arabic': ['Tajawal', 'sans-serif'],
+                    },
+                    colors: {
+                        'thika-blue': '#004080',
+                        'thika-green': '#28a745',
+                        'thika-light': '#f7f7f7',
+                        'thika-gray': '#6c757d',
+                    }
+                }
+            },
+            darkMode: 'class'
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #004080 0%, #0056b3 100%);
+        }
+        
+        .card-shadow {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .slide-enter {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        
+        .slide-enter-active {
+            transform: translateX(0);
+            opacity: 1;
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .slide-exit {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .slide-exit-active {
+            transform: translateX(-100%);
+            opacity: 0;
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #28a745 0%, #20c997 100%);
+        }
+        
+        .trustscore-circle {
+            background: conic-gradient(#28a745 0% var(--percentage), #e9ecef var(--percentage) 100%);
+        }
+    </style>
+</head>
+<body class="bg-thika-light dark:bg-gray-900 min-h-screen font-arabic">
+‎    <!-- التحكم في الوضع المظلم -->
+    <script>
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+    </script>
+
+‎    <!-- شريط التنقل العلوي -->
+    <nav class="bg-white dark:bg-gray-800 shadow-md fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23004080'/%3E%3Ctext x='50' y='58' text-anchor='middle' fill='white' font-size='24' font-weight='bold'%3Eثقة%3C/text%3E%3C/svg%3E" alt="ثقة" class="h-10 w-10">
+                    <h1 class="text-xl font-bold text-thika-blue dark:text-white">منصة ثقة</h1>
+                </div>
+                
+                <div id="userInfo" class="hidden items-center space-x-4 space-x-reverse">
+                    <span id="userName" class="text-gray-700 dark:text-gray-300"></span>
+                    <button onclick="logout()" class="text-thika-blue hover:text-blue-700 dark:text-blue-400">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+                
+                <div id="adminInfo" class="hidden items-center space-x-4 space-x-reverse">
+                    <span class="text-gray-700 dark:text-gray-300">لوحة التحكم</span>
+                    <button onclick="logout()" class="text-thika-blue hover:text-blue-700 dark:text-blue-400">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+‎    <!-- المحتوى الرئيسي -->
+    <main class="pt-16">
+        
+‎        <!-- 1. شاشة الترحيب وتسجيل الدخول -->
+        <div id="welcomeScreen" class="screen min-h-screen flex items-center justify-center">
+            <div class="max-w-md w-full mx-4">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 card-shadow">
+‎                    <!-- الشعار والترحيب -->
+                    <div class="text-center mb-8">
+                        <div class="mb-4">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Ccircle cx='60' cy='60' r='55' fill='%23004080'/%3E%3Ctext x='60' y='70' text-anchor='middle' fill='white' font-size='28' font-weight='bold'%3Eثقة%3C/text%3E%3C/svg%3E" alt="ثقة" class="h-20 w-20 mx-auto">
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">أهلاً بك في منصة ثقة</h2>
+                        <p class="text-gray-600 dark:text-gray-400">منصة التمويل الذكي من بنك الإنماء</p>
+                    </div>
+
+‎                    <!-- تبويب تسجيل الدخول والتسجيل -->
+                    <div class="flex mb-6 bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+                        <button id="loginTab" onclick="switchTab('login')" class="flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all bg-white dark:bg-gray-600 text-thika-blue dark:text-white shadow-sm">
+‎                            تسجيل دخول
+                        </button>
+                        <button id="registerTab" onclick="switchTab('register')" class="flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all text-gray-600 dark:text-gray-300">
+‎                            تسجيل جديد
+                        </button>
+                    </div>
+
+‎                    <!-- نموذج تسجيل الدخول -->
+                    <form id="loginForm" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">رقم الهوية الوطنية</label>
+                            <input type="text" id="loginId" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-thika-blue focus:border-transparent dark:bg-gray-700 dark:text-white text-base" placeholder="أدخل رقم الهوية">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">كلمة المرور</label>
+                            <input type="password" id="loginPassword" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-thika-blue focus:border-transparent dark:bg-gray-700 dark:text-white text-base" placeholder="أدخل كلمة المرور">
+                        </div>
+                        <button type="submit" class="w-full bg-thika-blue hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+‎                            تسجيل الدخول
+                        </button>
+                    </form>
+
+‎                    <!-- نموذج التسجيل الجديد -->
+                    <form id="registerForm" class="space-y-4 hidden">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">الاسم الكامل</label>
+                            <input type="text" id="fullName" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-thika-blue focus:border-transparent dark:bg-gray-700 dark:text-white text-base" placeholder="أدخل الاسم الكامل">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">رقم الهوية الوطنية</label>
+                            <input type="text" id="nationalId" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-thika-blue focus:border-transparent dark:bg-gray-700 dark:text-white text-base" placeholder="أدخل رقم الهوية">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">رقم الجوال</label>
+                            <input type="tel" id="phoneNumber" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-thika-blue focus:border-transparent dark:bg-gray-700 dark:text-white text-base" placeholder="05xxxxxxxx">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">البريد الإلكتروني</label>
+                            <input type="email" id="email" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-thika-blue focus:border-transparent dark:bg-gray-700 dark:text-white text-base" placeholder="example@email.com">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">كلمة المرور</label>
+                            <input type="password" id="password" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-thika-blue focus:border-transparent dark:bg-gray-700 dark:text-white text-base" placeholder="أدخل كلمة المرور">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">تأكيد كلمة المرور</label>
+                            <input type="password" id="confirmPassword" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-thika-blue focus:border-transparent dark:bg-gray-700 dark:text-white text-base" placeholder="أعد إدخال كلمة المرور">
+                        </div>
+                        <button type="submit" class="w-full bg-thika-green hover:bg-green-600 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+‎                            إنشاء حساب
+                        </button>
+                    </form>
+
+‎                    <!-- روابط إضافية -->
+                    <div class="mt-6 text-center space-y-2">
+                        <a href="#" class="text-thika-blue hover:underline text-sm">هل نسيت كلمة المرور؟</a>
+                        <div class="text-xs text-gray-500 dark:text-gray-400">
+                            <a href="#" class="hover:underline">الشروط والأحكام</a> | 
+                            <a href="#" class="hover:underline">سياسة الخصوصية</a>
+                        </div>
+                    </div>
+
+‎                    <!-- دخول الإدارة -->
+                    <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+                        <button onclick="showAdminLogin()" class="w-full text-sm text-gray-600 dark:text-gray-400 hover:text-thika-blue">
+‎                            دخول لوحة التحكم
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+‎        <!-- دخول الإدارة -->
+        <div id="adminLoginScreen" class="screen hidden min-h-screen flex items-center justify-center">
+            <div class="max-w-md w-full mx-4">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 card-shadow">
+                    <div class="text-center mb-8">
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">لوحة تحكم الإدارة</h2>
+                        <p class="text-gray-600 dark:text-gray-400">تسجيل دخول موظفي بنك الإنماء</p>
+                    </div>
+
+                    <form id="adminLoginForm" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">اسم المستخدم</label>
+                            <input type="text" id="adminUsername" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-thika-blue focus:border-transparent dark:bg-gray-700 dark:text-white text-base" placeholder="أدخل اسم المستخدم">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">كلمة المرور</label>
+                            <input type="password" id="adminPassword" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-thika-blue focus:border-transparent dark:bg-gray-700 dark:text-white text-base" placeholder="أدخل كلمة المرور">
+                        </div>
+                        <button type="submit" class="w-full bg-thika-blue hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+‎                            دخول لوحة التحكم
+                        </button>
+                    </form>
+
+                    <div class="mt-4 text-center">
+                        <button onclick="showWelcomeScreen()" class="text-thika-blue hover:underline text-sm">
+‎                            العودة للصفحة الرئيسية
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+‎        <!-- 2. شاشة الملف الشخصي -->
+        <div id="profileScreen" class="screen hidden">
+            <div class="max-w-4xl mx-auto py-8 px-4">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">إكمال الملف الشخصي</h2>
+                    
+                    <form id="profileForm" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">نوع العمل</label>
+                                <select id="workType" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-thika-blue focus:border-transparent dark:bg-gray-700 dark:text-white text-base">
+                                    <option value="">اختر نوع العمل</option>
+                                    <option value="freelancer">فريلانسر</option>
+                                    <option value="driver">سائق</option>
+                                    <option value="trader">تاجر</option>
+                                    <option value="employee">موظف</option>
+                                    <option value="business_owner">صاحب عمل</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">الدخل الشهري التقريبي</label>
+                                <select id="monthlyIncome" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-thika-blue focus:border-transparent dark:bg-gray-700 dark:text-white text-base">
+                                    <option value="">اختر الفئة</option>
+                                    <option value="less_3000">أقل من 3,000 ريال</option>
+                                    <option value="3000_5000">3,000 - 5,000 ريال</option>
+                                    <option value="5000_10000">5,000 - 10,000 ريال</option>
+                                    <option value="10000_20000">10,000 - 20,000 ريال</option>
+                                    <option value="more_20000">أكثر من 20,000 ريال</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">العنوان</label>
+                            <textarea id="address" rows="3" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-thika-blue focus:border-transparent dark:bg-gray-700 dark:text-white text-base" placeholder="أدخل العنوان الكامل"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">رفع المستندات الداعمة (اختياري)</label>
+                            <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center">
+                                <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                                <p class="text-gray-600 dark:text-gray-400 mb-2">اسحب الملفات هنا أو</p>
+                                <input type="file" id="documents" multiple accept=".pdf,.jpg,.jpeg,.png" class="hidden">
+                                <button type="button" onclick="document.getElementById('documents').click()" class="bg-thika-blue text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+‎                                    اختر الملفات
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-center">
+                            <button type="submit" class="bg-thika-green hover:bg-green-600 text-white font-medium py-3 px-8 rounded-lg transition-colors">
+‎                                حفظ والمتابعة
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+‎        <!-- 3. شاشة ربط بيانات الإنماء -->
+        <div id="bankLinkScreen" class="screen hidden">
+            <div class="max-w-4xl mx-auto py-8 px-4">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">ربط الحساب البنكي</h2>
+                        <p class="text-gray-600 dark:text-gray-400">لحساب درجة الثقة بدقة، نحتاج لربط حسابك في بنك الإنماء</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+‎                        <!-- خطوات الربط -->
+                        <div class="space-y-6">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">خطوات الربط:</h3>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-start space-x-4 space-x-reverse">
+                                    <div class="bg-thika-blue text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm">1</div>
+                                    <div>
+                                        <h4 class="font-medium text-gray-900 dark:text-white">رفع كشف الحساب</h4>
+                                        <p class="text-gray-600 dark:text-gray-400 text-sm">ارفع كشف حساب آخر 3 أشهر</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start space-x-4 space-x-reverse">
+                                    <div class="bg-thika-blue text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm">2</div>
+                                    <div>
+                                        <h4 class="font-medium text-gray-900 dark:text-white">تحليل البيانات</h4>
+                                        <p class="text-gray-600 dark:text-gray-400 text-sm">سيتم تحليل معاملاتك تلقائياً</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start space-x-4 space-x-reverse">
+                                    <div class="bg-thika-blue text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm">3</div>
+                                    <div>
+                                        <h4 class="font-medium text-gray-900 dark:text-white">حساب درجة الثقة</h4>
+                                        <p class="text-gray-600 dark:text-gray-400 text-sm">ستحصل على TrustScore الخاص بك</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+‎                        <!-- رفع المستندات -->
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">رفع كشف الحساب</h3>
+                            
+                            <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center mb-6">
+                                <i class="fas fa-file-pdf text-5xl text-red-500 mb-4"></i>
+                                <p class="text-gray-600 dark:text-gray-400 mb-4">ارفع كشف الحساب (PDF فقط)</p>
+                                <input type="file" id="bankStatement" accept=".pdf" class="hidden">
+                                <button type="button" onclick="document.getElementById('bankStatement').click()" class="bg-thika-blue text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+‎                                    اختيار الملف
+                                </button>
+                            </div>
+                            
+‎                            <!-- معلومات محاكاة -->
+                            <div id="bankInfo" class="hidden bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+                                <h4 class="font-medium text-green-800 dark:text-green-400 mb-2">تم تحليل البيانات بنجاح</h4>
+                                <div class="space-y-2 text-sm">
+                                    <p><span class="font-medium">رقم الحساب:</span> ****1234</p>
+                                    <p><span class="font-medium">متوسط الرصيد:</span> 15,750 ريال</p>
+                                    <p><span class="font-medium">عدد المعاملات الشهرية:</span> 45</p>
+                                    <p><span class="font-medium">انتظام التحويلات:</span> ممتاز</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-6 text-center">
+                                <button id="continueToTrust" onclick="showTrustScoreScreen()" class="hidden bg-thika-green hover:bg-green-600 text-white font-medium py-3 px-8 rounded-lg transition-colors">
+‎                                    المتابعة لحساب درجة الثقة
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+‎        <!-- 4. شاشة TrustScore -->
+        <div id="trustScoreScreen" class="screen hidden">
+            <div class="max-w-6xl mx-auto py-8 px-4">
+                <div class="text-center mb-8">
+                    <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">درجة الثقة الخاصة بك</h2>
+                    <p class="text-xl text-gray-600 dark:text-gray-400">TrustScore</p>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+‎                    <!-- دائرة TrustScore -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 text-center">
+                        <div class="relative w-64 h-64 mx-auto mb-6">
+                            <canvas id="trustScoreChart" width="256" height="256"></canvas>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-center">
+                                    <div class="text-5xl font-bold text-thika-blue dark:text-blue-400" id="trustScoreValue">75</div>
+                                    <div class="text-sm text-gray-600 dark:text-gray-400">من 100</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white">درجة ممتازة!</h3>
+                            <p class="text-gray-600 dark:text-gray-400">أنت مؤهل للحصول على تمويل بشروط ميسرة</p>
+                        </div>
+                    </div>
+                    
+‎                    <!-- تفاصيل النقاط -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">تفاصيل التقييم</h3>
+                        
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                                <div>
+                                    <h4 class="font-medium text-gray-900 dark:text-white">انتظام التحويلات</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">تحويلات منتظمة شهرياً</p>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-lg font-bold text-green-600">25/25</div>
+                                    <div class="text-sm text-gray-500">نقطة</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-between items-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                                <div>
+                                    <h4 class="font-medium text-gray-900 dark:text-white">الرصيد المتوسط</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">رصيد مستقر وصحي</p>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-lg font-bold text-green-600">20/25</div>
+                                    <div class="text-sm text-gray-500">نقطة</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-between items-center p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
+                                <div>
+                                    <h4 class="font-medium text-gray-900 dark:text-white">تاريخ السداد</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">لا توجد متأخرات</p>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-lg font-bold text-yellow-600">15/25</div>
+                                    <div class="text-sm text-gray-500">نقطة</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-between items-center p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
+                                <div>
+                                    <h4 class="font-medium text-gray-900 dark:text-white">تنوع المعاملات</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">معاملات متنوعة</p>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-lg font-bold text-yellow-600">15/25</div>
+                                    <div class="text-sm text-gray-500">نقطة</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+‎                        <!-- اقتراحات التحسين -->
+                        <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                            <h4 class="font-medium text-blue-900 dark:text-blue-400 mb-2">
+                                <i class="fas fa-lightbulb mr-2"></i>
+‎                                نصائح لتحسين درجتك
+                            </h4>
+                            <ul class="text-sm text-blue-800 dark:text-blue-300 space-y-1">
+                                <li>• حافظ على رصيد مستقر في حسابك</li>
+                                <li>• نوع في معاملاتك المالية</li>
+                                <li>• استخدم الخدمات البنكية الرقمية</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="mt-8 text-center">
+                            <button onclick="showFinancingScreen()" class="bg-thika-green hover:bg-green-600 text-white font-medium py-4 px-8 rounded-lg transition-colors text-lg">
+‎                                تقديم طلب تمويل
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+‎        <!-- 5. شاشة تقديم طلب التمويل -->
+        <div id="financingScreen" class="screen hidden">
+            <div class="max-w-4xl mx-auto py-8 px-4">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">طلب التمويل</h2>
+                    
+                    <form id="financingForm" class="space-y-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+‎                            <!-- مبلغ التمويل -->
+                            <div>
+                                <label class="block text-lg font-medium text-gray-700 dark:text-gray-300 mb-4">مبلغ التمويل المطلوب</label>
+                                <div class="relative">
+                                    <input type="range" id="financingAmount" min="1000" max="100000" step="1000" value="10000" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 slider">
+                                    <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400 mt-2">
+                                        <span>1,000 ريال</span>
+                                        <span>100,000 ريال</span>
+                                    </div>
+                                </div>
+                                <div class="mt-4 text-center">
+                                    <span class="text-3xl font-bold text-thika-blue dark:text-blue-400" id="amountDisplay">10,000</span>
+                                    <span class="text-lg text-gray-600 dark:text-gray-400"> ريال</span>
+                                </div>
+                            </div>
+                            
+‎                            <!-- مدة السداد -->
+                            <div>
+                                <label class="block text-lg font-medium text-gray-700 dark:text-gray-300 mb-4">مدة السداد</label>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <button type="button" onclick="selectDuration(1)" class="duration-btn p-4 border-2 border-gray-300 dark:border-gray-600 rounded-lg text-center hover:border-thika-blue dark:hover:border-blue-400 transition-colors">
+                                        <div class="text-xl font-bold">1</div>
+                                        <div class="text-sm">شهر</div>
+                                    </button>
+                                    <button type="button" onclick="selectDuration(3)" class="duration-btn p-4 border-2 border-gray-300 dark:border-gray-600 rounded-lg text-center hover:border-thika-blue dark:hover:border-blue-400 transition-colors">
+                                        <div class="text-xl font-bold">3</div>
+                                        <div class="text-sm">أشهر</div>
+                                    </button>
+                                    <button type="button" onclick="selectDuration(6)" class="duration-btn p-4 border-2 border-thika-blue bg-blue-50 dark:bg-blue-900/20 border-thika-blue dark:border-blue-400 rounded-lg text-center">
+                                        <div class="text-xl font-bold">6</div>
+                                        <div class="text-sm">أشهر</div>
+                                    </button>
+                                    <button type="button" onclick="selectDuration(12)" class="duration-btn p-4 border-2 border-gray-300 dark:border-gray-600 rounded-lg text-center hover:border-thika-blue dark:hover:border-blue-400 transition-colors">
+                                        <div class="text-xl font-bold">12</div>
+                                        <div class="text-sm">شهر</div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+‎                        <!-- تفاصيل التمويل -->
+                        <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-6">
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">تفاصيل التمويل</h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-thika-blue dark:text-blue-400" id="monthlyPayment">1,667</div>
+                                    <div class="text-sm text-gray-600 dark:text-gray-400">القسط الشهري (ريال)</div>
+                                </div>
+                                
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-green-600">0%</div>
+                                    <div class="text-sm text-gray-600 dark:text-gray-400">نسبة الفائدة</div>
+                                </div>
+                                
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-thika-green" id="totalAmount">10,000</div>
+                                    <div class="text-sm text-gray-600 dark:text-gray-400">إجمالي المبلغ (ريال)</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+‎                        <!-- الشروط والأحكام -->
+                        <div class="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-6">
+                            <h4 class="font-bold text-blue-900 dark:text-blue-400 mb-3">شروط التمويل:</h4>
+                            <ul class="text-sm text-blue-800 dark:text-blue-300 space-y-2">
+                                <li>• التمويل متوافق مع أحكام الشريعة الإسلامية</li>
+                                <li>• لا توجد فوائد أو رسوم إضافية</li>
+                                <li>• السداد المبكر مسموح بدون غرامات</li>
+                                <li>• يتم خصم الأقساط تلقائياً من حسابك</li>
+                                <li>• في حالة التأخير، يتم تطبيق رسوم إدارية بسيطة</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3 space-x-reverse">
+                            <input type="checkbox" id="agreeTerms" class="w-5 h-5 text-thika-blue border-gray-300 rounded focus:ring-thika-blue">
+                            <label for="agreeTerms" class="text-gray-700 dark:text-gray-300">
+‎                                أوافق على <a href="#" class="text-thika-blue hover:underline">الشروط والأحكام</a>
+                            </label>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="submit" class="bg-thika-green hover:bg-green-600 text-white font-medium py-4 px-12 rounded-lg transition-colors text-lg">
+‎                                تقديم الطلب
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+‎        <!-- 6. شاشة تأكيد الطلب -->
+        <div id="confirmationScreen" class="screen hidden">
+            <div class="max-w-2xl mx-auto py-8 px-4">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 text-center">
+                    <div class="mb-8">
+                        <div class="w-24 h-24 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-check text-4xl text-green-600"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">تم تقديم طلبك بنجاح!</h2>
+                        <p class="text-gray-600 dark:text-gray-400">سيتم مراجعة طلبك والرد عليك خلال 24 ساعة</p>
+                    </div>
+                    
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-6 mb-8">
+                        <h3 class="font-bold text-gray-900 dark:text-white mb-4">تفاصيل الطلب</h3>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-400">رقم الطلب:</span>
+                                <span class="font-medium" id="requestNumber">TH-2024-001</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-400">المبلغ المطلوب:</span>
+                                <span class="font-medium" id="confirmedAmount">10,000 ريال</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-400">مدة السداد:</span>
+                                <span class="font-medium" id="confirmedDuration">6 أشهر</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-400">الحالة:</span>
+                                <span class="text-yellow-600 font-medium">قيد المعالجة</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <button onclick="showRequestsScreen()" class="w-full bg-thika-blue hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors">
+‎                            عرض حالة الطلبات
+                        </button>
+                        
+                        <button onclick="showTrustScoreScreen()" class="w-full border border-thika-blue text-thika-blue hover:bg-blue-50 dark:hover:bg-blue-900/20 font-medium py-3 px-6 rounded-lg transition-colors">
+‎                            العودة للصفحة الرئيسية
+                        </button>
+                    </div>
+                    
+                    <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-600">
+                        <h4 class="font-medium text-gray-900 dark:text-white mb-2">تحتاج مساعدة؟</h4>
+                        <div class="flex justify-center space-x-6 space-x-reverse text-sm">
+                            <a href="#" class="text-thika-blue hover:underline">
+                                <i class="fas fa-phone mr-1"></i>
+                                920000000
+                            </a>
+                            <a href="#" class="text-thika-blue hover:underline">
+                                <i class="fas fa-envelope mr-1"></i>
+                                support@thika.sa
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+‎        <!-- 7. شاشة حالة الطلبات -->
+        <div id="requestsScreen" class="screen hidden">
+            <div class="max-w-6xl mx-auto py-8 px-4">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+                    <div class="flex justify-between items-center mb-8">
+                        <h2 class="text-3xl font-bold text-gray-900 dark:text-white">طلباتي</h2>
+                        <button onclick="showFinancingScreen()" class="bg-thika-green hover:bg-green-600 text-white font-medium py-2 px-6 rounded-lg transition-colors">
+‎                            طلب جديد
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-4" id="requestsList">
+‎                        <!-- طلب موافق عليه -->
+                        <div class="border border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20 rounded-xl p-6">
+                            <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
+                                <div>
+                                    <div class="flex items-center space-x-3 space-x-reverse mb-2">
+                                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">طلب #TH-2024-001</h3>
+                                        <span class="bg-green-600 text-white text-xs px-3 py-1 rounded-full">مقبول</span>
+                                    </div>
+                                    <div class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                                        <p>المبلغ: 15,000 ريال • المدة: 6 أشهر</p>
+                                        <p>القسط الشهري: 2,500 ريال</p>
+                                        <p>تاريخ التقديم: 15 نوفمبر 2024</p>
+                                    </div>
+                                </div>
+                                <div class="flex space-x-3 space-x-reverse">
+                                    <button class="bg-thika-blue text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm">
+‎                                        عرض التفاصيل
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+‎                        <!-- طلب قيد المعالجة -->
+                        <div class="border border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl p-6">
+                            <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
+                                <div>
+                                    <div class="flex items-center space-x-3 space-x-reverse mb-2">
+                                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">طلب #TH-2024-002</h3>
+                                        <span class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full">قيد المعالجة</span>
+                                    </div>
+                                    <div class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                                        <p>المبلغ: 10,000 ريال • المدة: 6 أشهر</p>
+                                        <p>القسط الشهري: 1,667 ريال</p>
+                                        <p>تاريخ التقديم: 20 نوفمبر 2024</p>
+                                    </div>
+                                </div>
+                                <div class="flex space-x-3 space-x-reverse">
+                                    <button class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors text-sm">
+‎                                        إلغاء الطلب
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+‎                        <!-- طلب مرفوض -->
+                        <div class="border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 rounded-xl p-6">
+                            <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
+                                <div>
+                                    <div class="flex items-center space-x-3 space-x-reverse mb-2">
+                                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">طلب #TH-2024-003</h3>
+                                        <span class="bg-red-600 text-white text-xs px-3 py-1 rounded-full">مرفوض</span>
+                                    </div>
+                                    <div class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                                        <p>المبلغ: 50,000 ريال • المدة: 12 شهر</p>
+                                        <p>سبب الرفض: المبلغ يتجاوز الحد المسموح</p>
+                                        <p>تاريخ التقديم: 10 نوفمبر 2024</p>
+                                    </div>
+                                </div>
+                                <div class="flex space-x-3 space-x-reverse">
+                                    <button onclick="showFinancingScreen()" class="bg-thika-green text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors text-sm">
+‎                                        طلب جديد
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+‎        <!-- 8. لوحة تحكم الإدارة -->
+        <div id="adminDashboard" class="screen hidden">
+            <div class="max-w-7xl mx-auto py-8 px-4">
+‎                <!-- إحصائيات سريعة -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center">
+                        <div class="text-3xl font-bold text-thika-blue dark:text-blue-400 mb-2">245</div>
+                        <div class="text-gray-600 dark:text-gray-400">طلبات جديدة</div>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center">
+                        <div class="text-3xl font-bold text-green-600 mb-2">82%</div>
+                        <div class="text-gray-600 dark:text-gray-400">نسبة الموافقة</div>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center">
+                        <div class="text-3xl font-bold text-yellow-600 mb-2">73</div>
+                        <div class="text-gray-600 dark:text-gray-400">متوسط TrustScore</div>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center">
+                        <div class="text-3xl font-bold text-purple-600 mb-2">2.4M</div>
+                        <div class="text-gray-600 dark:text-gray-400">إجمالي التمويل (ريال)</div>
+                    </div>
+                </div>
+                
+‎                <!-- قائمة الطلبات -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">الطلبات الجديدة</h2>
+                        <div class="flex space-x-3 space-x-reverse">
+                            <select class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white text-base">
+                                <option>جميع الطلبات</option>
+                                <option>قيد المعالجة</option>
+                                <option>مقبول</option>
+                                <option>مرفوض</option>
+                            </select>
+                            <button onclick="showReportsScreen()" class="bg-thika-blue text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+‎                                التقارير
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead class="bg-gray-50 dark:bg-gray-700">
+                                <tr>
+                                    <th class="px-4 py-3 text-right font-medium text-gray-700 dark:text-gray-300">رقم الطلب</th>
+                                    <th class="px-4 py-3 text-right font-medium text-gray-700 dark:text-gray-300">اسم العميل</th>
+                                    <th class="px-4 py-3 text-right font-medium text-gray-700 dark:text-gray-300">المبلغ</th>
+                                    <th class="px-4 py-3 text-right font-medium text-gray-700 dark:text-gray-300">TrustScore</th>
+                                    <th class="px-4 py-3 text-right font-medium text-gray-700 dark:text-gray-300">التاريخ</th>
+                                    <th class="px-4 py-3 text-right font-medium text-gray-700 dark:text-gray-300">الحالة</th>
+                                    <th class="px-4 py-3 text-right font-medium text-gray-700 dark:text-gray-300">الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 dark:divide-gray-600">
+                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <td class="px-4 py-4">#TH-2024-001</td>
+                                    <td class="px-4 py-4">محمد أحمد السعيد</td>
+                                    <td class="px-4 py-4">15,000 ريال</td>
+                                    <td class="px-4 py-4">
+                                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">85</span>
+                                    </td>
+                                    <td class="px-4 py-4">2024/11/20</td>
+                                    <td class="px-4 py-4">
+                                        <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">قيد المعالجة</span>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <div class="flex space-x-2 space-x-reverse">
+                                            <button onclick="approveRequest('TH-2024-001')" class="bg-green-600 text-white px-3 py-1 rounded text-xs hover:bg-green-700">موافقة</button>
+                                            <button onclick="rejectRequest('TH-2024-001')" class="bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-700">رفض</button>
+                                            <button onclick="viewRequestDetails('TH-2024-001')" class="bg-gray-600 text-white px-3 py-1 rounded text-xs hover:bg-gray-700">تفاصيل</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <td class="px-4 py-4">#TH-2024-002</td>
+                                    <td class="px-4 py-4">فاطمة علي المحمد</td>
+                                    <td class="px-4 py-4">8,000 ريال</td>
+                                    <td class="px-4 py-4">
+                                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">78</span>
+                                    </td>
+                                    <td class="px-4 py-4">2024/11/20</td>
+                                    <td class="px-4 py-4">
+                                        <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">قيد المعالجة</span>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <div class="flex space-x-2 space-x-reverse">
+                                            <button onclick="approveRequest('TH-2024-002')" class="bg-green-600 text-white px-3 py-1 rounded text-xs hover:bg-green-700">موافقة</button>
+                                            <button onclick="rejectRequest('TH-2024-002')" class="bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-700">رفض</button>
+                                            <button onclick="viewRequestDetails('TH-2024-002')" class="bg-gray-600 text-white px-3 py-1 rounded text-xs hover:bg-gray-700">تفاصيل</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <td class="px-4 py-4">#TH-2024-003</td>
+                                    <td class="px-4 py-4">عبدالله سعد الغامدي</td>
+                                    <td class="px-4 py-4">25,000 ريال</td>
+                                    <td class="px-4 py-4">
+                                        <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">65</span>
+                                    </td>
+                                    <td class="px-4 py-4">2024/11/19</td>
+                                    <td class="px-4 py-4">
+                                        <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">قيد المعالجة</span>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <div class="flex space-x-2 space-x-reverse">
+                                            <button onclick="approveRequest('TH-2024-003')" class="bg-green-600 text-white px-3 py-1 rounded text-xs hover:bg-green-700">موافقة</button>
+                                            <button onclick="rejectRequest('TH-2024-003')" class="bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-700">رفض</button>
+                                            <button onclick="viewRequestDetails('TH-2024-003')" class="bg-gray-600 text-white px-3 py-1 rounded text-xs hover:bg-gray-700">تفاصيل</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+‎        <!-- 9. شاشة التقارير -->
+        <div id="reportsScreen" class="screen hidden">
+            <div class="max-w-7xl mx-auto py-8 px-4">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white">التقارير والإحصائيات</h2>
+                    <button onclick="showAdminDashboard()" class="bg-thika-blue text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+‎                        العودة للوحة التحكم
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+‎                    <!-- رسم توزيع TrustScore -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6">توزيع درجات الثقة</h3>
+                        <canvas id="trustScoreDistribution"></canvas>
+                    </div>
+                    
+‎                    <!-- رسم نسب الموافقة -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6">نسب قبول ورفض الطلبات</h3>
+                        <canvas id="approvalRates"></canvas>
+                    </div>
+                    
+‎                    <!-- رسم الطلبات الشهرية -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6">الطلبات الشهرية</h3>
+                        <canvas id="monthlyRequests"></canvas>
+                    </div>
+                    
+‎                    <!-- مؤشرات الأداء -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6">مؤشرات الأداء الرئيسية</h3>
+                        <div class="space-y-6">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600 dark:text-gray-400">متوسط وقت المعالجة</span>
+                                <span class="text-xl font-bold text-thika-blue dark:text-blue-400">18 ساعة</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600 dark:text-gray-400">رضا العملاء</span>
+                                <span class="text-xl font-bold text-green-600">94%</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600 dark:text-gray-400">متوسط مبلغ التمويل</span>
+                                <span class="text-xl font-bold text-purple-600">12,450 ريال</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600 dark:text-gray-400">معدل السداد في الوقت</span>
+                                <span class="text-xl font-bold text-green-600">96%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script>
+‎        // متغيرات الحالة
+        let currentUser = null;
+        let isAdmin = false;
+        let selectedDuration = 6;
+        let financingAmount = 10000;
+        
+‎        // إدارة الشاشات
+        function hideAllScreens() {
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => screen.classList.add('hidden'));
+        }
+        
+        function showScreen(screenId) {
+            hideAllScreens();
+            document.getElementById(screenId).classList.remove('hidden');
+        }
+        
+        function showWelcomeScreen() {
+            isAdmin = false;
+            currentUser = null;
+            document.getElementById('userInfo').classList.add('hidden');
+            document.getElementById('adminInfo').classList.add('hidden');
+            showScreen('welcomeScreen');
+        }
+        
+        function showAdminLogin() {
+            showScreen('adminLoginScreen');
+        }
+        
+        function showProfileScreen() {
+            showScreen('profileScreen');
+        }
+        
+        function showBankLinkScreen() {
+            showScreen('bankLinkScreen');
+        }
+        
+        function showTrustScoreScreen() {
+            showScreen('trustScoreScreen');
+            setTimeout(createTrustScoreChart, 100);
+        }
+        
+        function showFinancingScreen() {
+            showScreen('financingScreen');
+            updateFinancingDetails();
+        }
+        
+        function showConfirmationScreen() {
+            showScreen('confirmationScreen');
+            generateRequestNumber();
+        }
+        
+        function showRequestsScreen() {
+            showScreen('requestsScreen');
+        }
+        
+        function showAdminDashboard() {
+            isAdmin = true;
+            document.getElementById('userInfo').classList.add('hidden');
+            document.getElementById('adminInfo').classList.remove('flex');
+            document.getElementById('adminInfo').classList.add('flex');
+            showScreen('adminDashboard');
+        }
+        
+        function showReportsScreen() {
+            showScreen('reportsScreen');
+            setTimeout(createCharts, 100);
+        }
+        
+‎        // تبديل التبويبات
+        function switchTab(tab) {
+            const loginTab = document.getElementById('loginTab');
+            const registerTab = document.getElementById('registerTab');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            
+            if (tab === 'login') {
+                loginTab.classList.add('bg-white', 'dark:bg-gray-600', 'text-thika-blue', 'dark:text-white', 'shadow-sm');
+                loginTab.classList.remove('text-gray-600', 'dark:text-gray-300');
+                registerTab.classList.remove('bg-white', 'dark:bg-gray-600', 'text-thika-blue', 'dark:text-white', 'shadow-sm');
+                registerTab.classList.add('text-gray-600', 'dark:text-gray-300');
+                
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+            } else {
+                registerTab.classList.add('bg-white', 'dark:bg-gray-600', 'text-thika-blue', 'dark:text-white', 'shadow-sm');
+                registerTab.classList.remove('text-gray-600', 'dark:text-gray-300');
+                loginTab.classList.remove('bg-white', 'dark:bg-gray-600', 'text-thika-blue', 'dark:text-white', 'shadow-sm');
+                loginTab.classList.add('text-gray-600', 'dark:text-gray-300');
+                
+                registerForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+            }
+        }
+        
+‎        // تسجيل الدخول والخروج
+        function login(userData) {
+            currentUser = userData;
+            document.getElementById('userName').textContent = userData.name;
+            document.getElementById('userInfo').classList.remove('hidden');
+            document.getElementById('userInfo').classList.add('flex');
+            showProfileScreen();
+        }
+        
+        function logout() {
+            currentUser = null;
+            isAdmin = false;
+            document.getElementById('userInfo').classList.add('hidden');
+            document.getElementById('adminInfo').classList.add('hidden');
+            showWelcomeScreen();
+        }
+        
+‎        // معالجة النماذج
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nationalId = document.getElementById('loginId').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (nationalId && password) {
+                login({ name: 'محمد أحمد', nationalId: nationalId });
+            }
+        });
+        
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const fullName = document.getElementById('fullName').value;
+            const nationalId = document.getElementById('nationalId').value;
+            const phone = document.getElementById('phoneNumber').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                showAlert('كلمتا المرور غير متطابقتان');
+                return;
+            }
+            
+            if (fullName && nationalId && phone && email && password) {
+                login({ name: fullName, nationalId: nationalId });
+            }
+        });
+        
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+            
+            if (username === 'admin' && password === 'admin123') {
+                showAdminDashboard();
+            } else {
+                showAlert('بيانات الدخول غير صحيحة');
+            }
+        });
+        
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showBankLinkScreen();
+        });
+        
+‎        // ربط البنك
+        document.getElementById('bankStatement').addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                setTimeout(() => {
+                    document.getElementById('bankInfo').classList.remove('hidden');
+                    document.getElementById('continueToTrust').classList.remove('hidden');
+                }, 2000);
+            }
+        });
+        
+‎        // رسم TrustScore
+        function createTrustScoreChart() {
+            const canvas = document.getElementById('trustScoreChart');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const score = 75;
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [score, 100 - score],
+                        backgroundColor: ['#28a745', '#e9ecef'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    cutout: '80%'
+                }
+            });
+        }
+        
+‎        // إدارة التمويل
+        function selectDuration(months) {
+            selectedDuration = months;
+            
+‎            // إزالة التحديد من جميع الأزرار
+            document.querySelectorAll('.duration-btn').forEach(btn => {
+                btn.classList.remove('border-thika-blue', 'bg-blue-50', 'dark:bg-blue-900/20');
+                btn.classList.add('border-gray-300', 'dark:border-gray-600');
+            });
+            
+‎            // تحديد الزر المضغوط
+            event.target.closest('.duration-btn').classList.add('border-thika-blue', 'bg-blue-50', 'dark:bg-blue-900/20');
+            event.target.closest('.duration-btn').classList.remove('border-gray-300', 'dark:border-gray-600');
+            
+            updateFinancingDetails();
+        }
+        
+        function updateFinancingDetails() {
+            const amount = parseInt(document.getElementById('financingAmount').value);
+            const monthlyPayment = Math.round(amount / selectedDuration);
+            
+            document.getElementById('amountDisplay').textContent = amount.toLocaleString();
+            document.getElementById('monthlyPayment').textContent = monthlyPayment.toLocaleString();
+            document.getElementById('totalAmount').textContent = amount.toLocaleString();
+            
+            financingAmount = amount;
+        }
+        
+        document.getElementById('financingAmount').addEventListener('input', function(e) {
+            updateFinancingDetails();
+        });
+        
+        document.getElementById('financingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const agreeTerms = document.getElementById('agreeTerms').checked;
+            
+            if (!agreeTerms) {
+                showAlert('يجب الموافقة على الشروط والأحكام');
+                return;
+            }
+            
+            showConfirmationScreen();
+        });
+        
+‎        // توليد رقم الطلب
+        function generateRequestNumber() {
+            const requestNumber = 'TH-2024-' + String(Math.floor(Math.random() * 1000)).padStart(3, '0');
+            document.getElementById('requestNumber').textContent = requestNumber;
+            document.getElementById('confirmedAmount').textContent = financingAmount.toLocaleString() + ' ريال';
+            document.getElementById('confirmedDuration').textContent = selectedDuration + ' أشهر';
+        }
+        
+‎        // وظائف الإدارة
+        function approveRequest(requestId) {
+            showConfirmDialog('هل أنت متأكد من الموافقة على هذا الطلب؟', () => {
+                showAlert('تم قبول الطلب بنجاح');
+‎                // هنا يمكن إضافة كود تحديث الجدول
+            });
+        }
+        
+        function rejectRequest(requestId) {
+            showConfirmDialog('هل أنت متأكد من رفض هذا الطلب؟', () => {
+                showAlert('تم رفض الطلب');
+‎                // هنا يمكن إضافة كود تحديث الجدول
+            });
+        }
+        
+        function viewRequestDetails(requestId) {
+            showAlert('عرض تفاصيل الطلب: ' + requestId);
+        }
+        
+‎        // إنشاء الرسوم البيانية للتقارير
+        function createCharts() {
+‎            // رسم توزيع TrustScore
+            const trustCtx = document.getElementById('trustScoreDistribution');
+            if (trustCtx) {
+                new Chart(trustCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['0-25', '26-50', '51-75', '76-100'],
+                        datasets: [{
+                            label: 'عدد العملاء',
+                            data: [12, 45, 123, 87],
+                            backgroundColor: ['#dc3545', '#ffc107', '#fd7e14', '#28a745']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+            
+‎            // رسم نسب الموافقة
+            const approvalCtx = document.getElementById('approvalRates');
+            if (approvalCtx) {
+                new Chart(approvalCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['مقبول', 'مرفوض', 'قيد المعالجة'],
+                        datasets: [{
+                            data: [82, 15, 3],
+                            backgroundColor: ['#28a745', '#dc3545', '#ffc107']
+                        }]
+                    },
+                    options: {
+                        responsive: true
+                    }
+                });
+            }
+            
+‎            // رسم الطلبات الشهرية
+            const monthlyCtx = document.getElementById('monthlyRequests');
+            if (monthlyCtx) {
+                new Chart(monthlyCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
+                        datasets: [{
+                            label: 'عدد الطلبات',
+                            data: [65, 78, 90, 81, 95, 102],
+                            borderColor: '#004080',
+                            backgroundColor: 'rgba(0, 64, 128, 0.1)',
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+        }
+        
+‎        // وظائف الحوار
+        function showAlert(message) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full mx-4">
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">${message}</p>
+                    <div class="flex justify-end">
+                        <button class="px-4 py-2 bg-thika-blue text-white hover:bg-blue-700 rounded" onclick="this.closest('.fixed').remove()">حسناً</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+        
+        function showConfirmDialog(message, onConfirm) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full mx-4">
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">${message}</p>
+                    <div class="flex justify-end space-x-3 space-x-reverse">
+                        <button class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded" onclick="this.closest('.fixed').remove()">إلغاء</button>
+                        <button class="px-4 py-2 bg-thika-blue text-white hover:bg-blue-700 rounded" onclick="this.closest('.fixed').remove(); onConfirm()">تأكيد</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+        
+‎        // تهيئة التطبيق
+        document.addEventListener('DOMContentLoaded', function() {
+            showWelcomeScreen();
+        });
+    </script>
+</body>
+</html>
